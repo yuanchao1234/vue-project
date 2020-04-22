@@ -1,5 +1,6 @@
 // vue.config.js
 const path = require('path')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -68,6 +69,10 @@ module.exports = {
       .set('views', resolve('src/views'))
   },
 
+  // configureWebpack: (config) => {
+  //   config.plugins.push(new BundleAnalyzerPlugin())
+  // },
+
   // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
   parallel: require('os').cpus().length > 1,
 
@@ -90,8 +95,7 @@ module.exports = {
     // 配置多个代理
     proxy: {
       '/api': {
-        // target: "https://127.0.0.0:8080", // 目标主机
-        target: 'https://mock.yonyoucloud.com/mock/5708',
+        target: 'https://www.mock.com',
         ws: true, // 代理的WebSockets
         changeOrigin: true, // 允许websockets跨域
         pathRewrite: {

@@ -1,18 +1,19 @@
 import axios from 'axios'
 import vm from '../main'
+import { baseApi } from '../config'
+console.log(baseApi)
 
 /* 全局默认配置 */
-const PRODUCT_URL = 'xxxxxxxxx'
-const MOCK_URL = 'abcdefg'
 var http = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? PRODUCT_URL : MOCK_URL
+  baseURL: baseApi,
+  timeout: 5000
 })
 /* 请求拦截器 */
 http.interceptors.request.use(
   config => {
     config.headers['Content-Type'] = 'application/json;charset=UTF-8'
     config.headers.timestamp = Math.floor(new Date().getTime() / 1000)
-    config.headers.token = sessionStorage.getItem('token')
+    config.headers.token = sessionStorage.getItem('token') || ''
     if (config.loading === true) {
       vm.$loading.hide()
       vm.$loading.show()
