@@ -15,9 +15,6 @@ import utils from './JS/utils'
 import VueScroller from 'vue-scroller'
 import { get, post } from './JS/ajax'
 
-import { baseApi } from './JS/config'
-console.log(baseApi)
-
 Vue.use(VueScroller)
 Vue.use(utils)
 
