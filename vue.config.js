@@ -1,6 +1,7 @@
 // vue.config.js
 const path = require('path')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const CompressionPlugin = require('compression-webpack-plugin')// 引入gzip压缩插件
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -35,7 +36,7 @@ module.exports = {
   transpileDependencies: [],
 
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
-  productionSourceMap: true,
+  productionSourceMap: false,
 
   // lintOnSave: true,
 
@@ -70,7 +71,15 @@ module.exports = {
   },
 
   configureWebpack: (config) => {
-    config.plugins.push(new BundleAnalyzerPlugin())
+    if (process.env.NODE_ENV === 'production') {
+      config.plugins.push(new BundleAnalyzerPlugin())
+
+      config.plugins.push(new CompressionPlugin({ // gzip压缩配置
+        test: /\.js$|\.html$|\.css/, // 匹配文件名
+        threshold: 10240, // 对超过10kb的数据进行压缩
+        deleteOriginalAssets: false // 是否删除原文件
+      }))
+    }
   },
 
   // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
@@ -85,9 +94,9 @@ module.exports = {
   // 代理配置
   devServer: {
     host: '0.0.0.0',
-    port: 8084, // 端口号
+    port: 8088, // 端口号
     https: false, // https:{type:Boolean}
-    open: true, // 配置自动启动浏览器  open: 'Google Chrome'-默认启动谷歌
+    open: false, // 配置自动启动浏览器  open: 'Google Chrome'-默认启动谷歌
 
     // 配置多个代理
     proxy: {

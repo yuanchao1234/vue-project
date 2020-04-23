@@ -27,7 +27,12 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title
-  next()
+  const userInfo = sessionStorage.getItem('userInfo') || null
+  if (!userInfo && to.meta.auth) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default new Vue({
