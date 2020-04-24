@@ -1,6 +1,7 @@
 <template>
   <div class="list">
-    <div class="listItem" v-for="(item,index) in list" :key="index">{{item.name}}
+    <div class="listItem" v-for="(item, index) in list" :key="index">
+      {{ item.name }}
     </div>
   </div>
 </template>
@@ -24,7 +25,8 @@ export default {
         { name: '跨域代理设置' },
         { name: 'webpack打包可视化分析' },
         { name: 'CDN资源优化' },
-        { name: 'gzip打包优化' }
+        { name: 'gzip打包优化' },
+        { name: '首页添加骨架屏' }
       ]
     }
   }
