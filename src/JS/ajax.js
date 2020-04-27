@@ -1,7 +1,6 @@
 import axios from 'axios'
 import vm from '../main'
 import { baseApi } from '../config'
-console.log(baseApi)
 
 /* 全局默认配置 */
 var http = axios.create({
@@ -14,6 +13,7 @@ http.interceptors.request.use(
     config.headers['Content-Type'] = 'application/json;charset=UTF-8'
     config.headers.timestamp = Math.floor(new Date().getTime() / 1000)
     config.headers.token = sessionStorage.getItem('token') || ''
+    // 接口没返回时显示loadin
     if (config.loading === true) {
       vm.$loading.hide()
       vm.$loading.show()
