@@ -69,6 +69,12 @@ module.exports = {
       .set('assets', resolve('src/assets'))
       .set('components', resolve('src/components'))
       .set('views', resolve('src/views'))
+
+    config.optimization.minimizer('terser').tap((args) => {
+      // 去除生产环境console
+      args[0].terserOptions.compress.drop_console = true
+      return args
+    })
   },
 
   configureWebpack: (config) => {
