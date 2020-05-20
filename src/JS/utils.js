@@ -282,7 +282,7 @@ export default {
       },
       // 防抖
       _debounce (fn, delay) {
-        var delay = delay || 200
+        var delay1 = delay || 200
         var timer
         return function () {
           var th = this
@@ -293,14 +293,14 @@ export default {
           timer = setTimeout(function () {
             timer = null
             fn.apply(th, args)
-          }, delay)
+          }, delay1)
         }
       },
       // 节流
       _throttle (fn, interval) {
         var last
         var timer
-        var interval = interval || 200
+        var interval1 = interval || 200
         return function () {
           var th = this
           var args = arguments
@@ -310,7 +310,7 @@ export default {
             timer = setTimeout(function () {
               last = now
               fn.apply(th, args)
-            }, interval)
+            }, interval1)
           } else {
             last = now
             fn.apply(th, args)
