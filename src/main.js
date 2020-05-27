@@ -12,6 +12,7 @@ import toast from './components/toast'
 
 import './JS/plugin'
 import './JS/FastClick'
+import filters from './JS/filter'
 import utils from './JS/utils'
 import VueScroller from 'vue-scroller'
 import { get, post } from './JS/ajax'
@@ -23,6 +24,11 @@ Vue.prototype.$dialog = Dialog
 Vue.prototype.$loading = Loading
 Vue.prototype.$toast = toast
 Vue.prototype.$http = { get, post }
+
+// 注入全局过滤器
+Object.keys(filters).forEach(item => {
+  Vue.filter(item, filters[item])
+})
 
 Vue.config.productionTip = false
 
