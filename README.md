@@ -697,11 +697,12 @@ configureWebpack: (config) => {
 
 所谓的骨架屏，就是在页面内容未加载完成的时候，先使用一些图形进行占位，待内容加载完成之后再把它替换掉。在这个过程中用户会感知到内容正在逐渐加载并即将呈现，降低了“白屏”的不良体验。
 
-本文采用vue-skeleton-webpack-plugin插件为单页面应用注入骨架屏。  
+本文采用 vue-skeleton-webpack-plugin 插件为单页面应用注入骨架屏。
 
-1、在src的common文件夹下面创建了Skeleton1.vue，Skeleton2.vue，具体的结构和样式自行设计，此处省略一万字。。。。
+1、在 src 的 common 文件夹下面创建了 Skeleton1.vue，Skeleton2.vue，具体的结构和样式自行设计，此处省略一万字。。。。
 
-2、在同级目录下新建entry-skeleton.js
+2、在同级目录下新建 entry-skeleton.js
+
 ```js
 import Vue from 'vue'
 import Skeleton1 from './Skeleton1'
@@ -710,17 +711,18 @@ import Skeleton2 from './Skeleton2'
 export default new Vue({
   components: {
     Skeleton1,
-    Skeleton2
+    Skeleton2,
   },
   template: `
     <div>
       <skeleton1 id="skeleton1" style="display:none"/>
       <skeleton2 id="skeleton2" style="display:none"/>
     </div>
-  `
+  `,
 })
 ```
-在vue.config.js下配置插件
+
+在 vue.config.js 下配置插件
 
 ```js
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
@@ -745,4 +747,96 @@ configureWebpack: (config) => {
   )
 }
 ```
-此时重新加载页面就可以看到我们的骨架屏了。**注意：一定要配置样式分离extract: true**
+
+此时重新加载页面就可以看到我们的骨架屏了。**注意：一定要配置样式分离 extract: true**
+
+## 使用 SvgIcon 组件
+
+svg 优点：
+
+- 图标易于实时修改，可以带动画
+- 可以使用标砖的 prop 和默认值来将图标保持在一个典型的尺寸并随时按需改变他们
+- 图标是内联的，所以不需要额外的 HTTP 请求
+- 可以动态地使得图标可访问
+
+通常我们项目都是使用 iconfont 阿里巴巴图标矢量库，但是操作比较麻烦，每次更新都要重新下载链接。另外我们可以使 svg-sprite-loader 实现。
+
+1、新增 SvgIcon 组件
+
+```vue
+<template>
+  <svg class="svg-icon" aria-hidden="true">
+    <use :xlink:href="iconName" />
+  </svg>
+</template>
+
+<script>
+export default {
+  name: 'SvgIcon',
+  props: {
+    iconClass: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    iconName() {
+      return `#icon-${this.iconClass}`
+    },
+  },
+}
+</script>
+
+<style scoped>
+.svg-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+</style>
+```
+
+2、全局注册组件并导入 svg
+
+```js
+import SvgIcon from './SvgIcon.vue'
+import Vue from 'vue'
+
+// 注册到全局
+Vue.component('svg-icon', SvgIcon)
+
+const requireAll = (requireContext) => requireContext.keys().map(requireContext)
+const req = require.context('./svg', false, /\.svg$/)
+requireAll(req)
+```
+
+3、在 main.js 中引入
+
+```js
+import './components/icon'
+```
+
+4、配置 vue.config.js
+
+```js
+module.exports = {
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule.exclude.add(/node_modules/)
+    svgRule
+      .test(/\.svg$/)
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]',
+      })
+
+    const imagesRule = config.module.rule('images')
+    imagesRule.exclude.add(resolve('src/icons'))
+    config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+  },
+}
+```

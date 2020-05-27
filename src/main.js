@@ -4,6 +4,7 @@ import router from './router'
 
 import './assets/css/reset.css'
 import './assets/css/common.css'
+import './components/icon/index'
 
 import Dialog from './components/dialog'
 import Loading from './components/loading'
