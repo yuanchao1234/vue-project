@@ -1,5 +1,5 @@
 // 本地环境配置
 module.exports = {
-  baseUrl: 'http://localhost:8089', // 项目地址
-  baseApi: 'https://www.mock.com/api' // 本地api请求地址
+  baseUrl: 'http://192.168.1.3:8088', // 项目地址
+  baseApi: 'http://192.168.1.3:8088' // 本地api请求地址
 }

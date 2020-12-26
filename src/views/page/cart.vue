@@ -1,11 +1,12 @@
 <template>
-  <div class="home">
-    123
+  <div class="cart">
+    cart
   </div>
 </template>
 
 <script>
 export default {
+  name: 'cart',
   data () {
     return {}
   }

@@ -52,11 +52,17 @@ module.exports = {
 
   // 是一个函数，会接收一个基于 webpack-chain 的 ChainableConfig 实例。允许对内部的 webpack 配置进行更细粒度的修改。
   chainWebpack: config => {
+    // config.module.rule('svg').uses.clear()
+    // config.module.rule('svg').use('svg-sprite-loader')
+    // .loader('svg- sprite- loader')
+    // .options({
+    //   symbolId: ' icon-[name] '
+    // })
     // 配置别名
     config.resolve.alias
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
-      .set('components', resolve('src/components'))
+      .set('comp', resolve('src/components'))
       .set('views', resolve('src/views'))
 
     config.optimization.minimizer('terser').tap((args) => {
@@ -124,15 +130,16 @@ module.exports = {
     open: false, // 配置自动启动浏览器  open: 'Google Chrome'-默认启动谷歌
 
     // 配置多个代理
-    proxy: {
-      '/api': {
-        target: 'https://www.mock.com',
-        ws: true, // 代理的WebSockets
-        changeOrigin: true, // 允许websockets跨域
-        pathRewrite: {
-          '^/api': ''
-        }
-      }
-    }
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://www.mock.com',
+    //     ws: true, // 代理的WebSockets
+    //     changeOrigin: true, // 允许websockets跨域
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     }
+    //   }
+    // }
+    proxy: 'http://192.168.1.3:3003',
   }
 }

@@ -5,6 +5,7 @@ import router from './router'
 import './assets/css/reset.css'
 import './assets/css/common.css'
 import './components/icon/index'
+import './assets/css/font_dd6pi8yhs7/iconfont.css'
 
 import Dialog from './components/dialog'
 import Loading from './components/loading'

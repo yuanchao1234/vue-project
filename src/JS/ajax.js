@@ -37,9 +37,13 @@ http.interceptors.response.use(
   }
 )
 
-function get (url, data, loading) {
+function get(url, data, loading) {
+  if (loading === true) {
+    vm.$loading.hide()
+    vm.$loading.show()
+  }
   return new Promise((resolve, reject) => {
-    http.get(url).then(
+    http.get(url, { params: data }).then(
       response => {
         resolve(response.data)
       },
