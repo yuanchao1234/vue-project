@@ -5,17 +5,25 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: () => import('../views/Home.vue'),
-    meta: { title: '首页', keepAlive: false }
+    path: '/page',
+    name: 'page',
+    component: () => import('../views/page.vue'),
+    meta: {},
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('../views/home.vue')
+      }
+    ]
   },
   {
     path: '/about',
-    name: 'About',
-    component: () => import('../views/About.vue'),
+    name: 'about',
+    component: () => import('../views/about.vue'),
     meta: { title: '其他', keepAlive: false }
-  }
+  },
+  { path: '/', redirect: { name: 'home' } }
 ]
 
 const router = new VueRouter({
