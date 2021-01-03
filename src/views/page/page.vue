@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="page-router">
-      <router-view />
+      <router-view ref="rvh"></router-view>
     </div>
     <van-tabbar :route="true" active-color="#f46">
       <van-tabbar-item 
@@ -61,7 +61,21 @@ export default {
       ],
     }
   },
-
+  watch:{
+    '$route.fullPath' () {
+      this.shiLi()
+    }
+  },
+  methods:{
+    shiLi(){
+      setTimeout(()=>{
+        window.vm = this.$refs.rvh
+      }, 500)
+    }
+  },
+  mounted(){
+    this.shiLi()
+  }
 }
 </script>
 <style lang="less" scope>

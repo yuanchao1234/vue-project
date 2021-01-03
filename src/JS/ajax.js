@@ -12,7 +12,7 @@ http.interceptors.request.use(
   config => {
     config.headers['Content-Type'] = 'application/json;charset=UTF-8'
     config.headers.timestamp = Math.floor(new Date().getTime() / 1000)
-    config.headers.token = sessionStorage.getItem('token') || ''
+    config.headers.token = localStorage.getItem('token') || ''
     // 接口没返回时显示loadin
     if (config.loading === true) {
       vm.$loading.hide()

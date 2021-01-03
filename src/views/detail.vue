@@ -142,7 +142,7 @@ export default {
       
     },
     home(){
-
+      this.$router.replace('/page/home')
     },
     cart(){
 

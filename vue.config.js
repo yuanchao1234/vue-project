@@ -1,8 +1,13 @@
 // vue.config.js
+const os = require("os")
 const path = require('path')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const CompressionPlugin = require('compression-webpack-plugin')// 引入gzip压缩插件
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
+// 获取ip
+// const ip = os.networkInterfaces()['以太网'][1].address
+const ip = os.networkInterfaces().WLAN[3].address
+process.env.VUE_APP_IP = ip
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -140,6 +145,6 @@ module.exports = {
     //     }
     //   }
     // }
-    proxy: 'http://192.168.1.3:3003',
+    proxy: `http://${ip}:3003`,
   }
 }
