@@ -61,7 +61,7 @@ export default {
         if (res.code === 1){// 登录成功
           localStorage.setItem('token', res.token)
           Toast.setDefaultOptions({ 
-            onClose(){// 设置回调
+            onClose(){// 设置回调，登录成功，回到原来的页面
               _.$router.push(_.$route.query.redirectUrl)
             }
           })
@@ -72,7 +72,10 @@ export default {
       })
     },
     goToReg(){
-      this.$router.push('/reg')
+      this.$router.push({
+        path: '/reg',
+        query: { redirectUrl: this.$route.query.redirectUrl }
+      })
     }
   }
 }

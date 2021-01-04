@@ -5,8 +5,9 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const CompressionPlugin = require('compression-webpack-plugin')// 引入gzip压缩插件
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
 // 获取ip
-// const ip = os.networkInterfaces()['以太网'][1].address
-const ip = os.networkInterfaces().WLAN[3].address
+// const ip = os.networkInterfaces()['以太网'][1].address // 连接网线
+// const ip = os.networkInterfaces().WLAN[3].address // 连接手机热点
+const ip = os.networkInterfaces().WLAN[1].address // 连接wifi
 process.env.VUE_APP_IP = ip
 
 function resolve (dir) {

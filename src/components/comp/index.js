@@ -1,5 +1,7 @@
 import sendlover from './sendlover.vue'
+import classifyRight from './classifyRight.vue'
 
 export {
-  sendlover
+  sendlover,
+  classifyRight
 }

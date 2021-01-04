@@ -73,7 +73,10 @@ export default {
       })
     },
     goToLogin(){
-      this.$router.push('/login')
+      this.$router.push({
+        path: '/login',
+        query: { redirectUrl: this.$route.query.redirectUrl }
+      })
     }
   }
 }

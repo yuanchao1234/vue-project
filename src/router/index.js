@@ -81,29 +81,27 @@ const router = new VueRouter({
 })
 // 全局路由
 router.beforeEach(async (to, from, next) => {
-  //判断哪些页面需要鉴权
+  // 判断哪些页面需要鉴权
   if (to.meta.requiresAuth) { //需要鉴权
     let token = localStorage.getItem('token')
-    //判断是否有token
-    if (token) {//有，说明有可能处于登录状态
-      //发送请求，查看token是否过期
-      // let data = await router.app.$http.post('/verify', {
-      //   token
-      // });
-      // console.log(data);
-      //判断token值是否过期
-      // if (data.data.code == 0) {//过期，跳回到登录页面
-      //   //过期的话，就将已存在的token,key删掉
-      //   localStorage.removeItem("token")
-      //   localStorage.removeItem("key")
-      //   next({
-      //     path: '/login',
-      //     query: {
-      //       redirectUrl: to.fullPath
-      //     }
-      //   });
-      // }
-      next();
+    // 判断是否有token
+    if (token) {// 有，说明有可能处于登录状态
+      // 发送请求，查看token是否过期
+      let data = await router.app.$http.post('/verify', {
+        token
+      })
+      // 判断token值是否过期
+      if (data.token) { // 没有过去
+        next()
+      } else { //过期，跳回到登录页面
+        localStorage.removeItem("token") // 过期的话，就将已存在的token,key删掉
+        next({
+          path: '/login',
+          query: {
+            redirectUrl: to.fullPath
+          }
+        })
+      }
     } else {//无，说明没有处于登录状态，跳回到登录页面
       next({
         path: '/login',
