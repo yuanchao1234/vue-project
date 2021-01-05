@@ -20,7 +20,7 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
     <div style="margin: 16px;">
-      <van-button round block type="info" native-type="submit" color="#f46">提交</van-button>
+      <van-button round block type="info" native-type="submit" color="#f46">注册</van-button>
     </div>
     </van-form>
     <div class="rui-login-other">
@@ -61,7 +61,12 @@ export default {
         if (res.code === 1){// 注册成功
           Toast.setDefaultOptions({ 
             onClose(){// 设置回调
-              _.$router.push('/login')
+              _.$router.push({
+                path:'/login',
+                query: { 
+                  redirectUrl: _.$route.query.redirectUrl 
+                }
+              })
             }
           })
           Toast.success('注册成功')

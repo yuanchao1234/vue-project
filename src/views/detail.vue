@@ -161,10 +161,10 @@ export default {
           })
         }).catch(() => {
         })
-      }else{
+      }else{ // 登录
         let key = localStorage.getItem("key")
         let { data } = await this.$http.get('addcart',{
-          gid: this.flower.gid, 
+          ...this.flower,
           shuliang: this.shuliang, 
           phone:key
         })
@@ -213,6 +213,7 @@ export default {
     async getDetail(){
       const gid = this.$route.params.id
       const { data } = await this.$http.get('about', { gid })
+      delete data[0]._id
       this.flower = data[0]
     }
   },
