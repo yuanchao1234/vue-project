@@ -39,7 +39,7 @@
       <div class="number-label">数量</div>
       <div class="shopp-number">
         <div class="number-plus" @click="reduce">-</div>
-        <input type="Number" name="number" id="goodCnt" class="number-input" v-model="shuliang1" />
+        <input type="Number" name="number" id="goodCnt" class="number-input" v-model="shuLiangComputed" />
         <div class="number-reduce" @click="plus">+</div>
       </div>
       <p class="kucun">库存：{{flower.gid}}</p>
@@ -122,30 +122,93 @@ export default {
   },
   computed:{
     pricecomputed(){
-      return 1
+      return this.flower.price * 1 + 30
     },
-    shuliang1(){
-      return 1
+    shuLiangComputed:{
+      get() {
+        return this.shuliang;
+      },
+      set(val) {
+        if (val >= this.flower.gid) { // 最大值
+          this.shuliang = this.flower.gid
+        }else if(val < 1){ // 最小值
+          this.shuliang = 1
+        }else { // 处于最小值与最大值之间
+          this.shuliang = val
+        }
+      }
     }
   },
   methods:{
     plus(){
-
+      this.shuLiangComputed++
     },
     reduce(){
-
+      this.shuLiangComputed--
     },
-    addcart(){
-
+    async addcart(){
+      let data = await this.$http.post('/verify')
+      // 判断token值是否过期
+      if (!data.token) { // 未登录
+        this.$dialog.confirm({
+          message: "请登录"
+        }).then(() => {
+          this.$router.push({
+            path:'/login',
+            query: {
+              redirectUrl: this.$route.fullPath
+            }
+          })
+        }).catch(() => {
+        })
+      }else{
+        let key = localStorage.getItem("key")
+        let { data } = await this.$http.get('addcart',{
+          gid: this.flower.gid, 
+          shuliang: this.shuliang, 
+          phone:key
+        })
+        if(data.insertedCount || data.modifiedCount === 1){
+          this.$toast({
+            msg: '添加成功',
+            type: 'success'
+          })
+        }else{
+          this.$toast({
+            msg: '添加失败',
+            type: 'fail'
+          })
+        }
+      }
     },
     phone(){
-      
+      this.$router.push({
+        path:'/page/phone'
+      })
     },
     home(){
       this.$router.replace('/page/home')
     },
-    cart(){
-
+    async cart(){
+      let data = await this.$http.post('/verify')
+      // 判断token值是否过期
+      if (!data.token) { // 未登录
+        this.$dialog.confirm({
+          message: "请登录"
+        }).then(() => {
+          this.$router.push({
+            path:'/login',
+            query: {
+              redirectUrl: this.$route.fullPath
+            }
+          })
+        }).catch(() => {
+        })
+      }else{
+        this.$router.push({
+          path:'/page/cart'
+        })
+      }
     },
     async getDetail(){
       const gid = this.$route.params.id
@@ -273,10 +336,10 @@ export default {
         text-align: center;
         line-height: 30px;
         font-size: 22px;
-        color: #ccc;
+        color: #474747;
       }
       .number-input {
-        width: 40px;
+        width: 70px;
         padding: 0 10px;
         border-width: 0 1px;
         border-style: solid;
@@ -284,7 +347,7 @@ export default {
         text-align: center;
         border-radius: 0;
         font-size: 16px;
-        color: #8b8b8b;
+        color: #474747;
       }
       .number-reduce {
         width: 40px;
@@ -292,7 +355,7 @@ export default {
         text-align: center;
         line-height: 30px;
         font-size: 22px;
-        color: #ccc;
+        color: #474747;
       }
     }
     .kucun {
