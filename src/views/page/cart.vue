@@ -20,7 +20,7 @@
                 <!-- 这里还有其他方案吗？ -->
                 <input
                   type="Number"
-                  v-model="item.shuliang"
+                  v-model.number="item.shuliang"
                   @change="yuanMethods(index)"
                   class="number-input"
                 />
@@ -50,7 +50,7 @@
   </div>
 </template>
 <script>
-import { Dialog } from "vant";
+import { Dialog, Toast } from "vant";
 export default {
   name:'cart',
   data() {
@@ -65,32 +65,32 @@ export default {
     this.getData()
   },
   methods: {
+    // 输入框的控制
     yuanMethods(index) {
       if (this.checkout[index].shuliang <= this.checkout[index].gid) {
-        window.console.log(this.checkout[index].shuliang);
-        this.$axios.get("http://localhost:8080/upcart", {
-          params: {
-            shuliang: this.checkout[index].shuliang,
-            gid: this.checkout[index].gid
-          }
-        });
+        this.$http.get("upcart", {
+          shuliang: this.checkout[index].shuliang,
+          gid: this.checkout[index].gid,
+          phone: this.phone
+        })
       } else {
-        this.checkout[index].shuliang = this.checkout[index].gid;
+        this.checkout[index].shuliang = this.checkout[index].gid
         Dialog.alert({
-          message: `"超出了库存量，库存为" ${this.checkout[index].gid}`
+          message: `超出了库存量，库存为${this.checkout[index].gid}`
         }).then(() => {
-          this.$axios.get("http://localhost:8080/upcart", {
-            params: {
-              shuliang: this.checkout[index].shuliang,
-              gid: this.checkout[index].gid
-            }
-          });
-        });
+          this.$http.get("upcart", {
+            shuliang: this.checkout[index].shuliang,
+            gid: this.checkout[index].gid,
+            phone: this.phone
+          })
+        })
       }
     },
+    // 选与未选
     checkMethods(item) {
       item.check = !item.check
     },
+    // 减
     reduceMethods(index, gid) {
       if (this.checkout[index].shuliang <= 1) {
         Dialog.confirm({
@@ -98,46 +98,50 @@ export default {
           message: "你确定要删除吗？"
         })
           .then(() => {
-            this.checkout.splice(index, 1);
+            // 删除视图层
+            this.checkout.splice(index, 1)
             //删除购物车数据
-            this.$axios.get(`http://localhost:3000/delcart?gid=${gid}`);
+            this.$http.get('delcart',{
+              gid,
+              phone: this.phone
+            })
           })
-          .catch(() => {});
+          .catch(() => {})
       } else {
         //减
         this.checkout[index].shuliang--;
         clearTimeout(this.time1);
         this.time1 = setTimeout(() => {
-          this.$axios.get("http://localhost:3000/upcart", {
-            params: {
+          this.$http.get("upcart", {
               shuliang: this.checkout[index].shuliang,
-              gid: this.checkout[index].gid,
+              gid,
               phone: this.phone
-            }
-          });
-        }, 500);
+          })
+        }, 500)
       }
     },
+    // 加
     plusMethods(index) {
-      //加
       //判断是否小于库存量
       if (this.checkout[index].shuliang < this.checkout[index].gid) {
         this.checkout[index].shuliang++;
         //防抖效果
         clearTimeout(this.time1);
         this.time1 = setTimeout(() => {
-          this.$axios.get("http://localhost:3000/upcart", {
-            params: {
-              shuliang: this.checkout[index].shuliang,
-              gid: this.checkout[index].gid,
-              phone: this.phone
-            }
-          });
-        }, 500);
+          this.$http.get("upcart", {
+            shuliang: this.checkout[index].shuliang,
+            gid: this.checkout[index].gid,
+            phone: this.phone
+          })
+        }, 500)
       } else {
-        window.console.log(this.checkout[index].shuliang);
+        Toast({
+          message:'当前库存为' + this.checkout[index].gid,
+          icon: 'fail'
+        })
       }
     },
+    // 合计的计算
     heJiMethods() {
       let sum = 0;
       let arr = [];
@@ -148,12 +152,6 @@ export default {
           arr.push(1)
         }
       })
-      /**
-       * 疑问2：为什么jiesuan.style.backgroundColor = "#58bc58";会报错(懂了)
-       * 答：因为此方法是在html节点中调用的，此时真实DOM还没渲染出来，所以不能有DOM的操作。为了解决这个问题：可以使用this.$nextTick(Fn)方法
-       */
-      //   window.console.log(arr.length);
-      //   let jiesuan = this.$refs.jiesuan;
       if (arr.length == this.checkout.length) {
         // jiesuan.style.backgroundColor = "#ccc";
         this.bgc = "#ccc"
@@ -163,6 +161,7 @@ export default {
       }
       return sum
     },
+    // 获取初始化数据
     async getData(){
       let phone = localStorage.getItem("key")
       this.phone = phone
@@ -172,6 +171,7 @@ export default {
     }
   },
   computed: {
+    // 选与未选
     kongGouWuCe() {
       if (this.checkout.length) {
         return false;
@@ -184,11 +184,11 @@ export default {
       let arr = [];
       this.checkout.forEach(item => {
         if (item.check) {
-          sum += item.price * item.shuliang;
+          sum += item.price * item.shuliang
         } else {
-          arr.push(1);
+          arr.push(1)
         }
-      });
+      })
       /**
        * 疑问1：如果放在计算属性，给bgc设置颜色，为什么不行，在方法中可以
        * 答：在vue中的计算属性不允许修改data的数据
@@ -300,7 +300,7 @@ export default {
               }
               .number-input {
                 height: 28px;
-                width: 38px;
+                width: 58px;
                 padding: 0 10px;
                 border-width: 0 1px;
                 border-style: solid;

@@ -57,7 +57,7 @@ export default {
       this.$http.post('/login', { 
         username:this.username,
         password:this.password 
-      }, true).then((res) => {
+      }).then((res) => {
         if (res.code === 1){// 登录成功
           localStorage.setItem('token', res.token)
           localStorage.setItem('key', 'hdc_' + this.username)

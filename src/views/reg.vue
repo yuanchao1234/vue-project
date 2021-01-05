@@ -57,7 +57,7 @@ export default {
       this.$http.post('/reg', { 
         username:this.username,
         password:this.password 
-      }, true).then((res) => {
+      }).then((res) => {
         if (res.code === 1){// 注册成功
           Toast.setDefaultOptions({ 
             onClose(){// 设置回调
