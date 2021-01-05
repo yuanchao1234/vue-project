@@ -32,6 +32,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapState, mapMutations } from 'vuex'
 import { Form, Field, Button, Toast } from 'vant'
 Vue.use(Form)
 Vue.use(Field)
@@ -50,8 +51,11 @@ export default {
     }
   },
   mounted(){
+    this.username = this.userState.username
+    this.password = this.userState.password
   },
   methods:{
+    ...mapMutations(['userMutations']),
     onSubmit(values) {
       let _ = this
       this.$http.post('/login', { 
@@ -63,6 +67,11 @@ export default {
           localStorage.setItem('key', 'hdc_' + this.username)
           Toast.setDefaultOptions({ 
             onClose(){// 设置回调，登录成功，回到原来的页面
+              // 将在仓库的账号密码清空
+              _.userMutations({
+                username: '',
+                password: '' 
+              })
               _.$router.push(_.$route.query.redirectUrl)
             }
           })
@@ -78,6 +87,9 @@ export default {
         query: { redirectUrl: this.$route.query.redirectUrl }
       })
     }
+  },
+  computed:{
+    ...mapState(['userState'])
   }
 }
 </script>

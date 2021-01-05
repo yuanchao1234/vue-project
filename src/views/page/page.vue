@@ -85,8 +85,5 @@ export default {
     height:100%;
     overflow: auto;
   }
-  .tab{
-
-  }
 }
 </style>

@@ -32,6 +32,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 import { Form, Field, Button, Toast } from 'vant'
 Vue.use(Form)
 Vue.use(Field)
@@ -52,6 +53,7 @@ export default {
   mounted(){
   },
   methods:{
+    ...mapMutations(['userMutations']),
     onSubmit(values) {
       let _ = this
       this.$http.post('/reg', { 
@@ -61,6 +63,12 @@ export default {
         if (res.code === 1){// 注册成功
           Toast.setDefaultOptions({ 
             onClose(){// 设置回调
+              // 将账号密码存到仓库里，目的：为了在登录页面回显
+              _.userMutations({
+                username: _.username,
+                password: _.password 
+              })
+              // 跳到登录页面
               _.$router.push({
                 path:'/login',
                 query: { 
