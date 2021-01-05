@@ -213,6 +213,7 @@ export default {
     }
   },
   mounted(){
+    this.yonghu = localStorage.getItem('key')
     this.classifydata('Brand_zone', 'list_3')
     this.classifydata('send_friend', 'list_4')
     this.classifydata('flower_sub', 'list_5')
@@ -223,16 +224,17 @@ export default {
       this.$http.get('home', { text }, true).then((res) => {
         if (res.code === 1){
           this[list] = res.data
+          this.pan = !res.token
         } else {
           console.log(res)
         }
       })
     },
     goto(){
-
+      this.$router.push("/login")
     },
     yonghuming(){
-
+      this.$router.replace("/page/mine")
     },
     gengduo(){
       this.$router.push({

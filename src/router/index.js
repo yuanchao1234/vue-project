@@ -58,13 +58,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('../views/login.vue'),
-    meta: { title: '登录', keepAlive: false }
+    meta: { title: '登录', keepAlive: false, goBack: true }
   },
   {
     path: '/reg',
     name: 'reg',
     component: () => import('../views/reg.vue'),
-    meta: { title: '注册', keepAlive: false }
+    meta: { title: '注册', keepAlive: false, goBack: true }
   },
   {
     path: '/about',
@@ -79,6 +79,10 @@ const router = new VueRouter({
   routes,
   scrollBehavior: () => ({ y: 0 })
 })
+function removeItem(){ 
+  localStorage.removeItem("token") // 过期的话，就将已存在的token,key删掉
+  localStorage.removeItem("key") // 过期的话，就将已存在的token,key删掉
+}
 // 全局路由
 router.beforeEach(async (to, from, next) => {
   // 判断哪些页面需要鉴权
@@ -87,14 +91,12 @@ router.beforeEach(async (to, from, next) => {
     // 判断是否有token
     if (token) {// 有，说明有可能处于登录状态
       // 发送请求，查看token是否过期
-      let data = await router.app.$http.post('/verify', {
-        token
-      })
+      let data = await router.app.$http.post('/verify')
       // 判断token值是否过期
-      if (data.token) { // 没有过去
+      if (data.token) { // 过期
         next()
       } else { //过期，跳回到登录页面
-        localStorage.removeItem("token") // 过期的话，就将已存在的token,key删掉
+        removeItem() // 删除本地存储
         next({
           path: '/login',
           query: {
@@ -111,8 +113,24 @@ router.beforeEach(async (to, from, next) => {
         replace: true
       });
     }
-  } else {//不需要鉴权
-    next();
   }
+  // 如果登录了，就不能进入登录
+  if (to.meta.goBack) {
+    let data = await router.app.$http.post('/verify')
+    // 判断token值是否过期
+    if (data.token) { // 没有过期
+      router.app.$dialog.alert({
+        message: "对不起，你已经登录了"
+      })
+        .then(() => {
+          next(from.fullPath) // 回到原来的页面
+        })
+    } else { // 过期，跳回到登录页面
+      removeItem() // 删除本地存储
+      next()
+    }
+  } 
+
+  next()
 });
 export default router

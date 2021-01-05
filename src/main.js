@@ -6,8 +6,10 @@ import './assets/css/reset.css'
 import './assets/css/common.css'
 import './components/icon/index'
 import './assets/css/font_dd6pi8yhs7/iconfont.css'
+import "./assets/css/iconfont/font_1572866_6q00f36ycxy/iconfont.css"
 
-import Dialog from './components/dialog'
+// import Dialog from './components/dialog'
+import { Dialog } from "vant";
 import Loading from './components/loading'
 import toast from './components/toast'
 

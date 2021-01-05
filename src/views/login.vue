@@ -60,6 +60,7 @@ export default {
       }, true).then((res) => {
         if (res.code === 1){// 登录成功
           localStorage.setItem('token', res.token)
+          localStorage.setItem('key', 'hdc_' + this.username)
           Toast.setDefaultOptions({ 
             onClose(){// 设置回调，登录成功，回到原来的页面
               _.$router.push(_.$route.query.redirectUrl)

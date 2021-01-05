@@ -8,6 +8,7 @@ const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
 // const ip = os.networkInterfaces()['以太网'][1].address // 连接网线
 // const ip = os.networkInterfaces().WLAN[3].address // 连接手机热点
 const ip = os.networkInterfaces().WLAN[1].address // 连接wifi
+console.log(os.networkInterfaces());
 process.env.VUE_APP_IP = ip
 
 function resolve (dir) {
