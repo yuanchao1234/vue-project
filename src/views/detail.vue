@@ -182,7 +182,7 @@ export default {
       }
     },
     phone(){
-      this.$router.push({
+      this.$router.replace({
         path:'/page/phone'
       })
     },

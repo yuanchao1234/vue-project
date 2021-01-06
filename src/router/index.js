@@ -74,8 +74,7 @@ const routes = [
   },
   { path: '/', redirect: { name: 'home' } }
 ]
-
-const router = new VueRouter({
+const createRouter = () => new VueRouter({
   routes,
   scrollBehavior: () => ({ y: 0 })
 })
@@ -83,6 +82,7 @@ function removeItem(){
   localStorage.removeItem("token") // 过期的话，就将已存在的token,key删掉
   localStorage.removeItem("key") // 过期的话，就将已存在的token,key删掉
 }
+var router = createRouter()
 // 全局路由
 router.beforeEach(async (to, from, next) => {
   // 判断哪些页面需要鉴权
@@ -129,8 +129,11 @@ router.beforeEach(async (to, from, next) => {
       removeItem() // 删除本地存储
       next()
     }
-  } 
-
+  }
   next()
-});
+})
+function resetRouter(){ 
+  const newRouter = createRouter()
+  router = newRouter
+}
 export default router

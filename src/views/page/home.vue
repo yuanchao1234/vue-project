@@ -231,7 +231,12 @@ export default {
       })
     },
     goto(){
-      this.$router.push("/login")
+      this.$router.push({
+        path:"/login",
+        query: {
+          redirectUrl: this.$route.fullPath
+        },
+      })
     },
     yonghuming(){
       this.$router.replace("/page/mine")
