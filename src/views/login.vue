@@ -27,6 +27,9 @@
       <div></div>
       <a @click="goToReg">立即注册</a>
     </div>
+    <div class="t-btn">
+      <van-button plain type="info" @click="$router.replace('/page/home')">返回首页</van-button>
+    </div>
   </div>
 </template>
 
@@ -118,6 +121,10 @@ export default {
     margin-top: 20px;
     font-size: 16px;
     color: #999;
+  }
+  .t-btn{
+    margin-top: 50px;
+    text-align: center;
   }
 }
 </style>

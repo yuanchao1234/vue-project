@@ -27,6 +27,9 @@
       <a @click="goToLogin">已有账号! 去登录</a>
       <div></div>
     </div>
+    <div class="t-btn">
+      <van-button plain type="info" @click="$router.replace('/page/home')">返回首页</van-button>
+    </div>
   </div>
 </template>
 
@@ -119,6 +122,10 @@ export default {
     margin-top: 20px;
     font-size: 16px;
     color: #999;
+  }
+  .t-btn{
+    margin-top: 50px;
+    text-align: center;
   }
 }
 </style>

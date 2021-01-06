@@ -46,13 +46,21 @@
       </div>
       <!-- 地址管理 -->
       <div class="from-warp">
-        <a href class="from-list-warp">
+        <div class="from-list-warp" @click="fengBu">
+          <div class="from-list-icon">
+            <!-- <i class="iconfont icon-dizhiguanli" style="color: rgb(50, 195, 42);"></i> -->
+            <van-icon name="apps-o" size="0.19rem" />
+          </div>
+          <div class="from-list-lebel">商品分布</div>
+          <div class="from-list-right from-mark-right"></div>
+        </div>
+        <div class="from-list-warp">
           <div class="from-list-icon">
             <i class="iconfont icon-dizhiguanli" style="color: rgb(50, 195, 42);"></i>
           </div>
           <div class="from-list-lebel">地址管理</div>
           <div class="from-list-right from-mark-right"></div>
-        </a>
+        </div>
         <div class="from-list-warp">
           <div class="from-list-icon">
             <i class="iconfont icon-zaixiankefu" style="color: rgb(28, 226, 141);"></i>
@@ -60,18 +68,21 @@
           <div class="from-list-lebel">在线客服</div>
           <div class="from-list-right from-mark-right"></div>
         </div>
-        <a class="from-list-warp">
+        <div class="from-list-warp">
           <div class="from-list-icon">
             <i class="iconfont icon-dianhua" style="color: rgb(0, 111, 248);"></i>
           </div>
           <div class="from-list-lebel">联系我们</div>
           <div class="from-list-right from-mark-right"></div>
-        </a>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Vue from 'vue'
+import { Icon } from 'vant'
+Vue.use(Icon)
 export default {
   name:'mine',
   data() {
@@ -83,6 +94,9 @@ export default {
     this.telphone = localStorage.getItem("key")
   },
   methods: {
+    fengBu(){
+      this.$router.push('/distribution')
+    },
     tuiChu() {
       this.$dialog.confirm({
         message: "你确定要退出吗？"

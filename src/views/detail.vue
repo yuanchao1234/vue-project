@@ -85,6 +85,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { Toast } from 'vant'
+Vue.use(Toast)
 export default {
   name: 'detail',
   data () {
@@ -169,15 +172,9 @@ export default {
           phone:key
         })
         if(data.insertedCount || data.modifiedCount === 1){
-          this.$toast({
-            msg: '添加成功',
-            type: 'success'
-          })
+          Toast.success('添加成功')
         }else{
-          this.$toast({
-            msg: '添加失败',
-            type: 'fail'
-          })
+          Toast.fail('添加失败')
         }
       }
     },

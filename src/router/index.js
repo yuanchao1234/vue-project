@@ -67,6 +67,12 @@ const routes = [
     meta: { title: '注册', keepAlive: false, goBack: true }
   },
   {
+    path: '/distribution',
+    name: 'distribution',
+    component: () => import('../views/distribution.vue'),
+    meta: { title: '分布页', keepAlive: false, requiresAuth: true }
+  },
+  {
     path: '/about',
     name: 'about',
     component: () => import('../views/about.vue'),
