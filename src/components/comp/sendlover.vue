@@ -29,7 +29,6 @@ export default {
     margin-top: 10px;
     background: #ffffff;
     box-sizing: border-box;
-    width: 375px;
     height: 45px;
     display: flex;
     justify-content: space-between;

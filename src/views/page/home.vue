@@ -294,14 +294,12 @@ export default {
     text-align: center;
   }
   .list {
-    width: 375px;
     height: 125px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background: #ffffff;
     .list_1 {
-      width: 347px;
       height: 125px;
       // border: 1px solid red;
       .list_2 {
