@@ -38,7 +38,7 @@ module.exports = {
   // 生产环境关闭 source map
   productionSourceMap: false,
 
-  // lintOnSave: true,
+  lintOnSave: false,
 
   // 配置css
   css: {

@@ -72,6 +72,12 @@ const routes = [
     meta: { title: '分布页', keepAlive: false, requiresAuth: true }
   },
   {
+    path: '/upload',
+    name: 'upload',
+    component: () => import('../views/upload.vue'),
+    meta: { title: '更换头像', keepAlive: false, requiresAuth: true }
+  },
+  {
     path: '/about',
     name: 'about',
     component: () => import('../views/about.vue'),

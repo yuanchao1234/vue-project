@@ -3,8 +3,15 @@
     <!-- 签到出 -->
     <div class="app">
       <div class="user-warp">
-        <div class="user-picture-warp">
-          <img src="https://cdn.huaduocai.net/HDC_WAP_IMAGES/user.png" class="user-picture" />
+        <div class="user-picture-warp" @click="toUpload">
+          <!-- <img :src="urlImages" class="user-picture" /> -->
+          <van-image
+            round
+            fit="cover"
+            width="0.6rem"
+            height="0.6rem"
+            :src="urlImages"
+          />
         </div>
         <div class="user-cell-warp">
           <div class="user-title">{{telphone}}</div>
@@ -81,19 +88,32 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Icon } from 'vant'
+import { Icon, Image as VanImage } from 'vant'
+import { baseUrl } from '../../config'
 Vue.use(Icon)
+Vue.use(VanImage)
 export default {
   name:'mine',
   data() {
     return {
-      telphone: ""
+      telphone: "",
+      urlImages: ''
     };
   },
   async created() {
     this.telphone = localStorage.getItem("key")
+    let username = this.telphone.split('_')[1]
+    this.getHeadPortrait(username)
   },
   methods: {
+    getHeadPortrait(username){
+      this.$http.get("headPortrait", { username, classify: 'get' }).then(({ data })=>{
+        this.urlImages = baseUrl + data
+      })
+    },
+    toUpload(){
+      this.$router.push('/upload')
+    },
     fengBu(){
       this.$router.push('/distribution')
     },

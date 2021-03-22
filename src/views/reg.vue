@@ -61,7 +61,8 @@ export default {
       let _ = this
       this.$http.post('/reg', { 
         username:this.username,
-        password:this.password 
+        password:this.password,
+        images: '/images/avatar/user.png'
       }).then((res) => {
         if (res.code === 1){// 注册成功
           Toast.setDefaultOptions({ 
